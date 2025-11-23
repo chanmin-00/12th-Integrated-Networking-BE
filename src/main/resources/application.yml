@@ -22,3 +22,7 @@ springdoc:
     doc-expansion: none
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
+
+openweather:
+  api:
+    key: ${OPENWEATHER_API_KEY}
