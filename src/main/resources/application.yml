@@ -25,4 +25,4 @@ springdoc:
 
 openweather:
   api:
-    key: a9e22ab5d292f2ebc32813d4b3ae5ed4
+    key: ${OPENWEATHER_API_KEY}
