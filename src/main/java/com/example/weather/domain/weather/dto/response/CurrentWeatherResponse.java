@@ -6,12 +6,14 @@ import lombok.Data;
 @Data
 @Builder
 public class CurrentWeatherResponse {
+    private String date;
     private double temperature;
     private double feelsLike;
     private String weatherDescription;
     private int humidity;
     private String windDirection;
     private double windSpeed;
+    private String weatherIcon; // 아이콘 코드
 
     private String pm10Level;      // 매우 좋음/좋음/보통/나쁨/매우 나쁨
     private String pm25Level;      // 매우 좋음/좋음/보통/나쁨/매우 나쁨
