@@ -92,7 +92,7 @@ public class WeatherService {
 
         return weather.getDaily()
                 .stream()
-                .limit(4)
+                .limit(7)
                 .map(daily -> {
 
                     // 1) daily 날짜 가져오기
