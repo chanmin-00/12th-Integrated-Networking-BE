@@ -13,9 +13,9 @@ public class CurrentWeatherResponse {
     private String windDirection;
     private double windSpeed;
 
-    private String pm10Level;      // 좋음/보통/나쁨
-    private String pm25Level;      // 좋음/보통/나쁨
-    private String uvLevel;        // 낮음/중간/높음/위험
+    private String pm10Level;      // 매우 좋음/좋음/보통/나쁨/매우 나쁨
+    private String pm25Level;      // 매우 좋음/좋음/보통/나쁨/매우 나쁨
+    private String uvLevel;        // 낮음/보통/높음/매우 높음/위험
 
     private String sunrise;        // "06:42"
     private String sunset;         // "17:12"
