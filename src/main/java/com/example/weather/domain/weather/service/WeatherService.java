@@ -57,18 +57,21 @@ public class WeatherService {
         boolean isDay = cur.getDt() >= cur.getSunrise() && cur.getDt() <= cur.getSunset();
 
         return CurrentWeatherResponse.builder()
+                .date(DateTimeUtils.toDate(cur.getDt()))
                 .temperature(cur.getTemp())
                 .feelsLike(cur.getFeels_like())
                 .weatherDescription(cur.getWeather().get(0).getDescription())
                 .humidity(cur.getHumidity())
                 .windDirection(WeatherConverter.windDegToDirection(cur.getWind_deg()))
                 .windSpeed(cur.getWind_speed())
+                .weatherIcon(cur.getWeather().get(0).getIcon())
                 .pm10Level(WeatherConverter.pm10ToLevel(airData.getComponents().getPm10()))
                 .pm25Level(WeatherConverter.pm25ToLevel(airData.getComponents().getPm2_5()))
                 .uvLevel(WeatherConverter.uviToLevel(cur.getUvi()))
                 .sunrise(DateTimeUtils.toKoreanTime(cur.getSunrise()))
                 .sunset(DateTimeUtils.toKoreanTime(cur.getSunset()))
                 .isDay(isDay)
+
                 .build();
     }
 
@@ -92,7 +95,7 @@ public class WeatherService {
 
         return weather.getDaily()
                 .stream()
-                .limit(4)
+                .limit(7)
                 .map(daily -> {
 
                     // 1) daily 날짜 가져오기
