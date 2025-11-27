@@ -11,6 +11,8 @@ import com.example.weather.domain.weather.dto.response.WeatherResponse;
 import com.example.weather.domain.weather.util.DateTimeUtils;
 import com.example.weather.domain.weather.util.WeatherConverter;
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Mono;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,14 +25,17 @@ public class WeatherService {
     private final WeatherClient weatherClient;
     private final AirPollutionClient airPollutionClient;
 
-    /**
-     * UI가 필요로 하는 모든 날씨 정보를 가공하여 반환하는 메서드
-     */
     public WeatherResponse getWeather(double lat, double lon) {
 
         // 1. 외부 API 호출
-        OneCallResponse weather = weatherClient.getWeather(lat, lon);
-        AirPollutionResponse air = airPollutionClient.getAirQuality(lat, lon);
+        Mono<OneCallResponse> weatherMono = weatherClient.getWeather(lat, lon);
+        Mono<AirPollutionResponse> airMono = airPollutionClient.getAirQuality(lat, lon);
+
+        // 두 호출을 병렬 실행 후 하나의 튜플로 반환
+        var tuple = Mono.zip(weatherMono, airMono).block();
+
+        OneCallResponse weather = tuple.getT1();
+        AirPollutionResponse air = tuple.getT2();
 
         // 2. 가공된 현재 날씨 생성
         CurrentWeatherResponse current = buildCurrentWeather(weather, air);
@@ -88,7 +93,7 @@ public class WeatherService {
                 ).collect(Collectors.toList());
     }
 
-    // 3) 주간 예보(4일치)
+    // 3) 주간 예보(7일치)
     private List<DailyWeatherResponse> buildDailyWeather(OneCallResponse weather) {
 
         List<OneCallResponse.Hourly> hourlyList = weather.getHourly(); // 48시간 데이터
